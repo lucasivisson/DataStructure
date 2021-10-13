@@ -31,7 +31,7 @@ int main() {
     // Cria um array de int
     *(p+i) = (int *) calloc(N, sizeof(int)); /* o valor do ponteiro p vai receber um
     endereço de memória de outro ponteiro.
-    pdoemos fazer dessa forma tbm: p[i] = (int *) calloc(N, sizeof(int)); */
+    podemos fazer dessa forma tbm: p[i] = (int *) calloc(N, sizeof(int)); */
     for(j = 0; j < N; j++) {
       scanf("%d", &p[i][j]); 
     } 
