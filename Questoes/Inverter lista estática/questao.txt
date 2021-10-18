@@ -1,0 +1,21 @@
+Dada uma lista L1 (estática), crie uma função que inverta a ordem de uma lista e armazene em uma outra lista L2.
+Escreva, como comentário (dentro do seu código), a analise do seu algortimo, a função de custo e a complexidade de sua função criada.
+Input Format
+
+N é o tamanho da lista L1
+
+Constraints
+
+Todos os valores são números inteiros.
+
+Output Format
+
+L2 com a ordem invertida de L1
+
+Sample Input 0
+
+7
+1 2 3 4 5 6 7
+Sample Output 0
+
+7 6 5 4 3 2 1
