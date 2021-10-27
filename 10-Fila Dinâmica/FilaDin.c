@@ -1,6 +1,7 @@
 struct fila{
     struct elemento *inicio;
     struct elemento *final;
+    int qtd;
 };
 
 struct elemento{
@@ -15,6 +16,7 @@ Fila* cria_fila() {
     if(fi != NULL){
         fi->final = NULL;
         fi->inicio = NULL;
+        fi->qtd = 0;
     }
     return fi;
 }
@@ -33,13 +35,7 @@ void libera_fila(Fila *fi) {
 
 int tamanho_fila(Fila *fi) {
     if(fi == NULL) return 0;
-    int cont = 0;
-    Elem *no = fi->inicio;
-    while(no != NULL) {
-        cont++;
-        no = no->prox;
-    }
-    return cont;
+    return fi->qtd;
 }
 
 int fila_cheia(Fila *fi) {
@@ -47,7 +43,7 @@ int fila_cheia(Fila *fi) {
 }
 
 int fila_vazia(Fila *fi) {
-    if(fi == NULL) return 1;
+    if(fi == NULL) return -1;
     if(fi->inicio == NULL)
         return 1;
     return 0;
@@ -64,6 +60,7 @@ int insere_fila(Fila *fi, struct aluno al) {
     else
         fi->final->prox = no;
     fi->final = no;
+    fi->qtd++;
     return 1;
 }
 
@@ -76,6 +73,7 @@ int remove_fila(Fila *fi) {
     if(fi->inicio == NULL)//fila ficou vazia
         fi->final = NULL;
     free(no);
+    fi->qtd--;
     return 1;
 }
 
