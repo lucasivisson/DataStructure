@@ -1,0 +1,27 @@
+Escreva uma função para unir duas filas (F1 e F2) estáticas. O resultado dessa união deve ser colocado em F1 e sem repetições de elementos. Retorne também 1 - para caso em que não houve repetições entres as duas fila ou 0 - para caso de ter ocorrido repetição. F2 deve ficar fazia.
+
+Comente explicando a sua função. Detalhe as partes mais importantes dela.
+
+Escreva, como comentário (dentro do seu código), a análise do seu algoritmo, a função de custo e a complexidade de sua função criada.
+
+Input Format
+
+Entrada N tamanho de cada fila - primeira linha
+As filas – na segunda e terceira linhas
+Constraints
+
+Todos os valores são números inteiros.
+
+Output Format
+
+A fila gerada da união - primeira linha
+Valor 1 sem remoção por repetição ou 0 com remoção por repetição - segunda linha
+Sample Input 0
+
+3 4
+1 2 3 
+4 5 6 7
+Sample Output 0
+
+1 2 3 4 5 6 7
+1

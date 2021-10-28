@@ -14,7 +14,7 @@ Fila* cria_fila() {
 }
 
 void libera_fila(Fila *fi) {
-    free(li);
+    free(fi);
 }
 
 int tamanho_fila(Fila *fi) {
