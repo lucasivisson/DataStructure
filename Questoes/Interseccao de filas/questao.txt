@@ -1,0 +1,38 @@
+Escreva uma função para fazer a interseção entre duas filas: F1 estática e F2 encadeada. O resultado dessa interseção deve colocado em uma terceira fila - F3 encadeada. Caso não haja interseção, retorne a palavra ZERO.
+
+F1 deve ser criada considerando o TAD fila estática
+F2 deve ser criada considerando o TAD fila encadeada.
+A função deve ler essas duas filas e criar a fila F3 encadeada com os elementos de interseção entre F1 e F2.
+Comente explicando a sua função. Detalhe as partes mais importantes dela.
+
+Escreva, como comentário (dentro do seu código), a análise do seu algoritmo, a função de custo e a complexidade de sua função criada.
+
+Input Format
+
+Entrada N tamanho de cada fila - primeira linha
+A fila estática – na segunda linha
+A fila encadeada - na terceira linha
+Constraints
+
+Todos os valores são números inteiros.
+
+Output Format
+
+A fila resultante da interseção.
+Retorne a palavra ZERO se não houver interseção entre F1 e F2
+Sample Input 0
+
+4 3
+2 3 4 5
+1 2 5
+Sample Output 0
+
+2 5
+Sample Input 1
+
+5 5
+12 15 19 10 11
+13 14 15 19 11
+Sample Output 1
+
+15 19 11
