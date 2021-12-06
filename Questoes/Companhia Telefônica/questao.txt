@@ -1,0 +1,45 @@
+Uma grande companhia telefônica precisa identificar rapidamente os nomes de quem faz chamadas telefônicas. Escreva um programa que, ao receber um número de telefone, retorne o nome de quem está ligando.
+
+Construa o programa utilizando tabela Hash.
+
+Os números de telefone são de 8 dígitos. Serão dados 10 números de telefone inicialmente.
+
+Faça a análise de complexidade.
+
+Input Format
+
+A entrada inicia com 10 linhas, cada linha contém um inteiro seguido de uma string, indicando o número de telefone e o nome da pessoa respectivamente.
+
+Após as 10 linhas, segue um inteiro N, indicando quantas consultas serão feitas. Por fim seguem N linhas, cada uma contendo um número de telefone.
+
+Constraints
+
+1 <= N <= 10.
+
+Todos os nomes são compostos de letras minúsculas.
+
+Output Format
+
+Imprima N linhas. Cada linha contendo o nome da pessoa correspondente ao telefone.
+
+Sample Input 0
+
+12345678 jorge
+87654321 leticia
+18233496 matheus
+93162149 geralt
+99999999 lua
+33311152 lucas
+93934477 rosa
+83419462 rogerio
+13418156 fabiana
+89233217 michael
+3
+33311152
+18233496
+89233217
+Sample Output 0
+
+lucas
+matheus
+michael
