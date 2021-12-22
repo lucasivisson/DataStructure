@@ -1,0 +1,31 @@
+Dada a seguinte funçao hashing: h(x) = x mod 10
+
+Escreva uma função que receba um inteiro N, indicando a quantidade de elementos que serão inseridos em uma tabela hash.
+
+Em seguida uma sequência de valores.
+
+Imprima um inteiro que representa a quantidade de colisões ocorridas.
+
+Faça a análise de complexidade.
+
+Input Format
+
+N é a quantidade de elementos - primeira linha.
+
+A sequência de inteiros a serem armazenados na tabela hash - segunda linha.
+
+Constraints
+
+Todos os valores são inteiros.
+
+Output Format
+
+Imprima um inteiro que representa a quantidade de colisões ocorridas. Se não houver colisões, deve retorna o inteiro 0.
+
+Sample Input 0
+
+10
+10 2 200 3 300 100 4 7 9 1
+Sample Output 0
+
+3
