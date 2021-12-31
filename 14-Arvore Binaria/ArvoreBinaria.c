@@ -31,7 +31,7 @@ void libera_ArvBin(ArvBin *raiz) {
     free(raiz);
 }
 
-int estaVazia_ArvBin(ArvBi *raiz) {
+int estaVazia_ArvBin(ArvBin *raiz) {
     if(raiz == NULL)
         return 1;
     if(*raiz == NULL)

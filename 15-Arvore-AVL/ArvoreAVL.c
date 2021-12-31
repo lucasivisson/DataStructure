@@ -9,6 +9,106 @@ struct NO {
     struct NO *dir;
 }
 
+ArvAVL* cria_ArvAVL() {
+    ArvAVL *raiz = (ArvAVL*) malloc(sizeof(ArvAVL));
+    if(raiz != NULL)
+        *raiz = NULL;
+    return raiz;
+}
+
+void libera_NO(struct NO *no) {
+    if(no == NULL)
+        return
+    libera_NO(no->esq);
+    libera_NO(no->dir);
+    free(no);
+    no = NULL;
+}
+
+void libera_ArvAVL(ArvAVL *raiz) {
+    if(raiz == NULL)
+        return;
+    libera_NO(*raiz);
+    free(raiz);
+}
+
+int estaVazia_ArvAVL(ArvAVL *raiz) {
+    if(raiz == NULL)
+        return 1;
+    if(*raiz == NULL)
+        return 1;
+    return 0;
+}
+
+int altura_ArvAVL(ArvAVL *raiz) {
+    if(raiz == NULL)
+        return 0;
+    if(*raiz == NULL)
+        return 0;
+    int alt_esq = totalNO_ArvAVL(&((*raiz)->esq));
+    int alt_dir = totalNO_ArvAVL(&((*raiz)->dir));
+    if(alt_esq > alt_dir) 
+        return (alt_esq + 1);
+    else
+        return (alt_dir + 1);
+}
+
+int totalNO_ArvAVL(ArvAVL *raiz) {
+    if(raiz == NULL)
+        return 0;
+    if(*raiz == NULL)
+        return 0;
+    int alt_esq = totalNO_ArvAVL(&((*raiz)->esq));
+    int alt_dir = totalNO_ArvAVL(&((*raiz)->dir));
+    return (alt_esq + alt_dir + 1)
+}
+
+void preOrdem_ArvAVL(ArvAVL *raiz) {
+    if(raiz == NULL)
+        return;
+    if(*raiz != NULL) {
+        printf("%d\n", (*raiz)->info);
+        preOrdem_ArvAVL(&((*raiz)->esq));
+        preOrdem_ArvAVL(&((*raiz)->dir));
+    }
+}
+
+void emOrdem_ArvAVL(ArvAVL *raiz) {
+    if(raiz == NULL)
+        return;
+    if(*raiz != NULL) {
+        emOrdem_ArvAVL(&((*raiz)->esq));
+        printf("%d\n", (*raiz)->info);
+        emOrdem_ArvAVL(&((*raiz)->dir));
+    }
+}
+
+void posOrdem_ArvAVL(ArvAVL *raiz) {
+    if(raiz == NULL)
+        return;
+    if(*raiz != NULL) {
+        posOrdem_ArvAVL(&((*raiz)->esq));
+        posOrdem_ArvAVL(&((*raiz)->dir));
+        printf("%d\n", (*raiz)->info);
+    }
+}
+
+int consulta_ArvAVL(ArvAVL *raiz, int valor) {
+    if(raiz == NULL)
+        return 0;
+    struct NO *atual = *raiz;
+    while(atual != NULL) {
+        if(valor == atual->info) {
+            return 1;
+        }
+        if(valor > atual->info)
+            atual = atual->dir;
+        else
+            atual = atual->esq;
+    }
+    return 0;
+}
+
 //Calcula a altura de um nó
 int altura_NO(struct NO *no) {
     if(no == NULL)
@@ -104,4 +204,64 @@ int insere_ArvAVL(ArvAVL *raiz, int valor) {
     }
     atual->altura = maior(altura_NO(atual->esq), altura_NO(atual->dir)) + 1;
     return res;
+}
+
+int remove_ArvAVL(AvrAvl *raiz, int valor) {
+    if(*raiz == NULL) { //valor não existe
+        printf("valor não existe!!\n");
+        return 0;
+    }
+    int res;
+    if(valor < (*raiz)->info) {
+        if((res = remove_ArvAVL(&(*raiz)->esq, valor)) == 1) {
+            if(fatorBalanceamento_NO(*raiz) >= 2) {
+                if(altura_NO((*raiz)->dir->esq) <= altura_NO((*raiz)->dir->dir))
+                    RotacaoRR(raiz);
+                else
+                    RotacaoRL(raiz);
+            }
+        }
+    }
+    if((*raiz)->info < valor) {
+        if((res = remove_ArvAVL(&(*raiz)->dir, valor)) == 1) {
+            if(fatorBalanceamento_NO(*raiz) >= 2) {
+                if(altura_NO((*raiz)->esq->dir) <= altura_NO((*raiz)->esq->esq))
+                    RotacaoLL(raiz);
+                else
+                    RotacaoLR(raiz);
+            }
+        }
+    }
+    if((*raiz)->info == valor) {
+        if((*raiz)->esq == NULL || (*raiz)->dir == NULL) {
+            struct NO *oldNode = (*raiz);
+            if((*raiz)->esq != NULL)
+                *raiz = (*raiz)->esq;
+            else
+                *raiz = (*raiz)->dir;
+            free(oldNode);
+        }else{ //nó tem 2 filhos
+            struct NO *temp = procuraMenor((*raiz)->dir);
+            (*raiz)->info = temp->info;
+            remove_ArvAVL(&(*raiz)->dir, (*raiz)->info);
+            if(fatorBalanceamento_NO(*raiz) >= 2) {
+                if(altura_NO((*raiz)->esq->dir) <= altura_NO((*raiz)->esq->esq))
+                    RotacaoLL(raiz);
+                else
+                    RotacaoLR(raiz);
+            }
+        }
+        return 1;
+    }
+    return res;
+}
+
+struct NO* procuraMenor(struct NO* atual) {
+    struct NO *no1 = atual;
+    struct NO *no2 = atual->esq;
+    while(no2 != NULL) {
+        no1 = no2;
+        no2 = no2->esq;
+    }
+    return no1;
 }
