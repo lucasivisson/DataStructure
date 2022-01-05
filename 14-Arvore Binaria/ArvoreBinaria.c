@@ -17,7 +17,7 @@ ArvBin* cria_ArvBin() {
 
 void libera_NO(struct NO *no) {
     if(no == NULL)
-        return
+        return;
     libera_NO(no->esq);
     libera_NO(no->dir);
     free(no);
@@ -99,7 +99,7 @@ int insere_ArvBin(ArvBin *raiz, int valor) {
     novo = (struct NO*) malloc(sizeof(struct NO));
     if(novo == NULL)
         return 0;
-    novo->infor = valor;
+    novo->info = valor;
     novo->dir = NULL;
     novo->esq = NULL;
     if(*raiz == NULL)
@@ -126,6 +126,56 @@ int insere_ArvBin(ArvBin *raiz, int valor) {
     return 1;
 }
 
+struct NO* remove_atual(struct NO* atual) {
+    struct NO *no1, *no2;
+    if(atual->esq == NULL) {
+        no2 = atual->dir;
+        free(atual);
+        return no2;
+    }
+    no1 = atual;
+    no2 = atual->esq;
+    while(no2->dir != NULL) {
+        no1 = no2;
+        no2 = no2->dir;
+    }
+
+    if(no1 != atual) {
+        no1->dir = no2->esq;
+        no2->esq = atual->esq;
+    }
+    no2->dir = atual->dir;
+    free(atual);
+    return no2;
+}
+
+struct NO* remove_atual2(struct NO* atual) {
+    struct NO *no1, *no2;
+    if(atual->esq==NULL){
+        no2=atual->dir;
+        free(atual);
+        return no2;
+    }
+    if(atual->dir==NULL){
+        no2=atual->esq;
+        free(atual);
+        return no2;
+    }
+    no1=atual;
+    no2=atual->dir;
+    while(no2->esq!=NULL){
+        no1=no2;
+        no2=no2->esq;
+    }
+    if(no1!=atual){
+        no1->esq=no2->dir;
+        no2->dir=atual->dir;
+    }
+    no2->esq=atual->esq;
+    free(atual);
+    return no2;
+}
+
 int remove_ArvBin(ArvBin *raiz, int valor) {
     if(raiz == NULL) return 0;
     struct NO *ant = NULL;
@@ -148,29 +198,53 @@ int remove_ArvBin(ArvBin *raiz, int valor) {
         else
             atual = atual->esq;
     }
+    return 1;
 }
 
-struct NO* remove_atual(struct NO*, atual) {
-    struct NO, *no1, *no2;
-    if(atual->esq == NULL) {
-        no2 = atual->dir;
-        free(atual);
-        return no2;
+struct NO* arv_retirar_alternativo(struct NO* r, int v)
+{
+ if (r == NULL)
+    return NULL;
+ else if (r->info > v)
+    r->esq = arv_retirar(r->esq, v);
+ else if (r->info < v)
+    r->dir = arv_retirar(r->dir, v);
+ else { /* achou o no a remover */
+ /* no sem filhos */
+    if (r->esq == NULL && r->dir == NULL) {
+       free(r);
+       r = NULL;
     }
-    no1 = atual;
-    no2 = atual->esq;
-    while(no2->dir != NULL) {
-        no1 = no2;
-        no2 = no2->dir;
+    /* no so tem filho a direita */
+    else if (r->esq == NULL) {
+       struct NO* t = r;
+       r = r->dir;
+       free(t);
     }
+    /* so tem filho a esquerda */
+    else if (r->dir == NULL) {
+       struct NO* t = r;
+       r = r->esq;
+       free(t);
+    }
+    /* no tem os dois filhos */
+    else {
+       struct NO* f = r->esq;
+       while (f->dir != NULL) {
+          f = f->dir;
+       }
+       r->info = f->info; /* troca as informacoes */
+       f->info = v;
+       r->esq = arv_retirar(r->esq,v);
+    }
+ }
+return r;
+}
 
-    if(no1 != atual) {
-        no1->dir = no2->esq;
-        no2->Esq = atual->esq;
-    }
-    no2->dir = atual->dir;
-    free(atual);
-    return no2;
+int remove_ArvBin_alternativo(ArvBin *raiz, int valor) {
+    struct NO *atual = *raiz;
+    arv_retirar(atual, valor);
+    return 1;
 }
 
 int consulta_ArvBin(ArvBin *raiz, int valor) {

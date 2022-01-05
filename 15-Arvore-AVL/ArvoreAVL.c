@@ -7,7 +7,7 @@ struct NO {
     int alt; //altura daquela sub-arvore
     struct NO *esq;
     struct NO *dir;
-}
+};
 
 ArvAVL* cria_ArvAVL() {
     ArvAVL *raiz = (ArvAVL*) malloc(sizeof(ArvAVL));
@@ -18,7 +18,7 @@ ArvAVL* cria_ArvAVL() {
 
 void libera_NO(struct NO *no) {
     if(no == NULL)
-        return
+        return;
     libera_NO(no->esq);
     libera_NO(no->dir);
     free(no);
@@ -67,7 +67,7 @@ void preOrdem_ArvAVL(ArvAVL *raiz) {
     if(raiz == NULL)
         return;
     if(*raiz != NULL) {
-        printf("%d\n", (*raiz)->info);
+        printf("%d ", (*raiz)->info);
         preOrdem_ArvAVL(&((*raiz)->esq));
         preOrdem_ArvAVL(&((*raiz)->dir));
     }
@@ -78,7 +78,7 @@ void emOrdem_ArvAVL(ArvAVL *raiz) {
         return;
     if(*raiz != NULL) {
         emOrdem_ArvAVL(&((*raiz)->esq));
-        printf("%d\n", (*raiz)->info);
+        printf("%d ", (*raiz)->info);
         emOrdem_ArvAVL(&((*raiz)->dir));
     }
 }
@@ -89,7 +89,7 @@ void posOrdem_ArvAVL(ArvAVL *raiz) {
     if(*raiz != NULL) {
         posOrdem_ArvAVL(&((*raiz)->esq));
         posOrdem_ArvAVL(&((*raiz)->dir));
-        printf("%d\n", (*raiz)->info);
+        printf("%d ", (*raiz)->info);
     }
 }
 
@@ -109,7 +109,7 @@ int consulta_ArvAVL(ArvAVL *raiz, int valor) {
     return 0;
 }
 
-//Calcula a altura de um nó
+//Calcula a altura de um no
 int altura_NO(struct NO *no) {
     if(no == NULL)
         return -1;
@@ -117,10 +117,10 @@ int altura_NO(struct NO *no) {
         return no->alt;
 }
 
-//Calcula o fator de balanceamento de um nó
+//Calcula o fator de balanceamento de um no
 int fatorBalanceamento_NO(struct NO *no) {
-    // labs serve para pegar apenas o modulo, retirando o positivo ou negativo
-    return labs(alt_NO(no->esq) - alt_NO(no->dir));
+    // labs serve para pegar apenas o modulo retirando o positivo ou negativo
+    return labs(altura_NO(no->esq) - altura_NO(no->dir));
 }
 
 //Calcula o maior valor
@@ -136,8 +136,8 @@ void RotacaoLL(ArvAVL *raiz) {
     no = (*raiz)->esq;
     (*raiz)->esq = no->dir;
     no->dir = *raiz;
-    (*raiz)->altura = maior(altura_NO((*raiz)->esq), altura_NO((*raiz)->dir)) + 1;
-    no->altura = maior(altura_NO(no->esq), (*raiz)->altura) + 1;
+    (*raiz)->alt = maior(altura_NO((*raiz)->esq), altura_NO((*raiz)->dir)) + 1;
+    no->alt = maior(altura_NO(no->esq), (*raiz)->alt) + 1;
     (*raiz) = no;
 }
 
@@ -146,8 +146,8 @@ void RotacaoRR(ArvAVL *raiz) {
     no = (*raiz)->dir;
     (*raiz)->dir = no->esq;
     no->esq = (*raiz);
-    (*raiz)->altura = maior(altura_NO((*raiz)->esq), altura_NO((*raiz)->dir)) + 1;
-    no->altura = maior(altura_NO(no->dir), (*raiz)->altura) + 1;
+    (*raiz)->alt = maior(altura_NO((*raiz)->esq), altura_NO((*raiz)->dir)) + 1;
+    no->alt = maior(altura_NO(no->dir), (*raiz)->alt) + 1;
     (*raiz) = no;
 }
 
@@ -163,13 +163,13 @@ void RotacaoRL(ArvAVL *raiz) {
 
 int insere_ArvAVL(ArvAVL *raiz, int valor) {
     int res;
-    if(*raiz == NULL) { //arvore vazia ou nó folha
+    if(*raiz == NULL) { //arvore vazia ou no folha
         struct NO *novo;
         novo = (struct NO*) malloc(sizeof(struct NO));
         if(novo == NULL)
             return 0;
         novo->info = valor;
-        novo->altura = 0;
+        novo->alt = 0;
         novo->esq = NULL;
         novo->dir = NULL;
         *raiz = novo;
@@ -177,7 +177,7 @@ int insere_ArvAVL(ArvAVL *raiz, int valor) {
     }
     struct NO *atual = *raiz;
     if(valor < atual->info) {
-        if((res = insereArvAVL(&(atual->esq), valor)) == 1) {
+        if((res = insere_ArvAVL(&(atual->esq), valor)) == 1) {
             if(fatorBalanceamento_NO(atual) >= 2) {
                 if(valor < (*raiz)->esq->info) {
                     RotacaoLL(raiz);
@@ -202,13 +202,23 @@ int insere_ArvAVL(ArvAVL *raiz, int valor) {
             return 0;
         }
     }
-    atual->altura = maior(altura_NO(atual->esq), altura_NO(atual->dir)) + 1;
+    atual->alt = maior(altura_NO(atual->esq), altura_NO(atual->dir)) + 1;
     return res;
 }
 
-int remove_ArvAVL(AvrAvl *raiz, int valor) {
-    if(*raiz == NULL) { //valor não existe
-        printf("valor não existe!!\n");
+struct NO* procuraMenor(struct NO* atual) {
+    struct NO *no1 = atual;
+    struct NO *no2 = atual->esq;
+    while(no2 != NULL) {
+        no1 = no2;
+        no2 = no2->esq;
+    }
+    return no1;
+}
+
+int remove_ArvAVL(ArvAVL *raiz, int valor) {
+    if(*raiz == NULL) { //valor nao existe
+        printf("valor nao existe!!\n");
         return 0;
     }
     int res;
@@ -240,7 +250,7 @@ int remove_ArvAVL(AvrAvl *raiz, int valor) {
             else
                 *raiz = (*raiz)->dir;
             free(oldNode);
-        }else{ //nó tem 2 filhos
+        }else{ //no tem 2 filhos
             struct NO *temp = procuraMenor((*raiz)->dir);
             (*raiz)->info = temp->info;
             remove_ArvAVL(&(*raiz)->dir, (*raiz)->info);
@@ -254,14 +264,4 @@ int remove_ArvAVL(AvrAvl *raiz, int valor) {
         return 1;
     }
     return res;
-}
-
-struct NO* procuraMenor(struct NO* atual) {
-    struct NO *no1 = atual;
-    struct NO *no2 = atual->esq;
-    while(no2 != NULL) {
-        no1 = no2;
-        no2 = no2->esq;
-    }
-    return no1;
 }
