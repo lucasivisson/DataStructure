@@ -2,6 +2,8 @@
 #include <string.h>
 #include "TabelaHash.h"
 
+typedef struct NO *ArvAVL;
+
 struct hash {
     int qtd, TABLE_SIZE;
     ArvAVL **itens;
@@ -12,7 +14,7 @@ Hash* criaHash(int TABLE_SIZE) {
     if(ha != NULL) {
         int i;
         ha->TABLE_SIZE = TABLE_SIZE;
-        ha->itens = (struct NO***) malloc(TABLE_SIZE * sizeof(struct NO**));
+        ha->itens = (ArvAVL**) malloc(TABLE_SIZE * sizeof(ArvAVL*));
         if(ha->itens == NULL) {
             free(ha);
             return NULL;
@@ -39,7 +41,6 @@ void liberaHash(Hash *ha) {
 /*
 Método da Divisao: Consiste em calcular o "resto da divisão" do valor inteiro que
 representa o elemento pelo tamanho da tabela, "TABLE_SIZE".
-
 - A operação de "E bit-a-bit" com o valor 0x7FFFFFFF elimina o bit de sinal do
 valor da "chave".
 - Evita o risco de ocorrer um overflow e obtermos um número negativo
@@ -56,7 +57,7 @@ multiplicada pelo tamanho da tabela para calcular a posição do elemento
 */
 
 int chaveMultiplicacao(int chave, int TABLE_SIZE) {
-    float A = 0.6180339887 // constante 0 < A < 1
+    float A = 0.6180339887; // constante 0 < A < 1
     float val = chave * A;
     val = val - (int) val;
     return (int) (TABLE_SIZE * val);
@@ -142,7 +143,6 @@ Agrupamento secundário:
 hash também produzem as mesmas "posições" na "sondagem quadrática"
 - Felizmente, a degradação produzida na tabela é menor que a produzida pelos "agrupamentos
 primários"
-
 */
 
 int sondagemQuadratica(int pos, int i, int TABLE_SIZE) {

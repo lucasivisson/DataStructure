@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ArvoreAVL.h"
+#include "TabelaHash.h"
 #include <string.h>
 
 struct NO {

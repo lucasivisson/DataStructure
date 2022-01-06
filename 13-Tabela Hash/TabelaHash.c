@@ -56,7 +56,7 @@ multiplicada pelo tamanho da tabela para calcular a posição do elemento
 */
 
 int chaveMultiplicacao(int chave, int TABLE_SIZE) {
-    float A = 0.6180339887 // constante 0 < A < 1
+    float A = 0.6180339887; // constante 0 < A < 1
     float val = chave * A;
     val = val - (int) val;
     return (int) (TABLE_SIZE * val);

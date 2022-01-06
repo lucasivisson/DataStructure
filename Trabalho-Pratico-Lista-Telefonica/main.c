@@ -9,7 +9,7 @@ int main() {
     ArvAVL *raiz = cria_ArvAVL();
 
     int insereComColisao = insereHash_EnderAberto(ha, raiz, 85);
-    printf("%d", insereComColisao);
+    printf("%d\n", insereComColisao);
 
     struct dados pessoa;
     pessoa.telefone = 997879611;
