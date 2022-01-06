@@ -4,9 +4,7 @@
 #include <string.h>
 
 struct NO {
-    int telefone;
-    char nome[50];
-    char endereco[50];
+    struct dados pessoa;
     int alt; //altura daquela sub-arvore
     struct NO *esq;
     struct NO *dir;
@@ -70,7 +68,7 @@ void preOrdem_ArvAVL(ArvAVL *raiz) {
     if(raiz == NULL)
         return;
     if(*raiz != NULL) {
-        printf("%d ", (*raiz)->telefone);
+        printf("%d ", (*raiz)->pessoa.telefone);
         preOrdem_ArvAVL(&((*raiz)->esq));
         preOrdem_ArvAVL(&((*raiz)->dir));
     }
@@ -81,7 +79,7 @@ void emOrdem_ArvAVL(ArvAVL *raiz) {
         return;
     if(*raiz != NULL) {
         emOrdem_ArvAVL(&((*raiz)->esq));
-        printf("%d ", (*raiz)->telefone);
+        printf("%d ", (*raiz)->pessoa.telefone);
         emOrdem_ArvAVL(&((*raiz)->dir));
     }
 }
@@ -92,22 +90,22 @@ void posOrdem_ArvAVL(ArvAVL *raiz) {
     if(*raiz != NULL) {
         posOrdem_ArvAVL(&((*raiz)->esq));
         posOrdem_ArvAVL(&((*raiz)->dir));
-        printf("%d ", (*raiz)->telefone);
+        printf("%d ", (*raiz)->pessoa.telefone);
     }
 }
 
-int consulta_ArvAVL(ArvAVL *raiz, int telefone) {
+int consulta_ArvAVL(ArvAVL *raiz, struct dados pessoa) {
     if(raiz == NULL)
         return 0;
     struct NO *atual = *raiz;
     while(atual != NULL) {
-        if(telefone == atual->telefone) {
-            printf("%s\n", atual->nome);
-            printf("%s\n", atual->endereco);
-            printf("%d\n", atual->telefone);
+        if(pessoa.telefone == atual->pessoa.telefone) {
+            printf("%s\n", atual->pessoa.nome);
+            printf("%s\n", atual->pessoa.endereco);
+            printf("%d\n", atual->pessoa.telefone);
             return 1;
         }
-        if(telefone > atual->telefone)
+        if(pessoa.telefone > atual->pessoa.telefone)
             atual = atual->dir;
         else
             atual = atual->esq;
@@ -167,16 +165,14 @@ void RotacaoRL(ArvAVL *raiz) {
     RotacaoRR(raiz);
 }
 
-int insere_ArvAVL(ArvAVL *raiz, int telefone, char nome[50], char endereco[50]) {
+int insere_ArvAVL(ArvAVL *raiz, struct dados pessoa) {
     int res;
     if(*raiz == NULL) { //arvore vazia ou no folha
         struct NO *novo;
         novo = (struct NO*) malloc(sizeof(struct NO));
         if(novo == NULL)
             return 0;
-        novo->telefone = telefone;
-        strcpy(novo->nome , "Lucas");
-        strcpy(novo->endereco , "Rua 8 casa 540 vila velha");
+        novo->pessoa = pessoa;
         novo->alt = 0;
         novo->esq = NULL;
         novo->dir = NULL;
@@ -184,10 +180,10 @@ int insere_ArvAVL(ArvAVL *raiz, int telefone, char nome[50], char endereco[50]) 
         return 1;
     }
     struct NO *atual = *raiz;
-    if(telefone < atual->telefone) {
-        if((res = insere_ArvAVL(&(atual->esq), telefone, nome, endereco)) == 1) {
+    if(pessoa.telefone < atual->pessoa.telefone) {
+        if((res = insere_ArvAVL(&(atual->esq), pessoa)) == 1) {
             if(fatorBalanceamento_NO(atual) >= 2) {
-                if(telefone < (*raiz)->esq->telefone) {
+                if(pessoa.telefone < (*raiz)->esq->pessoa.telefone) {
                     RotacaoLL(raiz);
                 }else{
                     RotacaoLR(raiz);
@@ -195,10 +191,10 @@ int insere_ArvAVL(ArvAVL *raiz, int telefone, char nome[50], char endereco[50]) 
             }
         }
     }else{
-        if(telefone > atual->telefone) {
-            if((res = insere_ArvAVL(&(atual->dir), telefone, nome, endereco)) == 1) {
+        if(pessoa.telefone > atual->pessoa.telefone) {
+            if((res = insere_ArvAVL(&(atual->dir), pessoa)) == 1) {
                 if(fatorBalanceamento_NO(atual) >= 2) {
-                    if((*raiz)->dir->telefone < telefone) {
+                    if((*raiz)->dir->pessoa.telefone < pessoa.telefone) {
                         RotacaoRR(raiz);
                     }else{
                         RotacaoRL(raiz);
@@ -224,14 +220,14 @@ struct NO* procuraMenor(struct NO* atual) {
     return no1;
 }
 
-int remove_ArvAVL(ArvAVL *raiz, int telefone) {
+int remove_ArvAVL(ArvAVL *raiz, struct dados pessoa) {
     if(*raiz == NULL) { //valor nao existe
         printf("valor nao existe!!\n");
         return 0;
     }
     int res;
-    if(telefone < (*raiz)->telefone) {
-        if((res = remove_ArvAVL(&(*raiz)->esq, telefone)) == 1) {
+    if(pessoa.telefone < (*raiz)->pessoa.telefone) {
+        if((res = remove_ArvAVL(&(*raiz)->esq, pessoa)) == 1) {
             if(fatorBalanceamento_NO(*raiz) >= 2) {
                 if(altura_NO((*raiz)->dir->esq) <= altura_NO((*raiz)->dir->dir))
                     RotacaoRR(raiz);
@@ -240,8 +236,8 @@ int remove_ArvAVL(ArvAVL *raiz, int telefone) {
             }
         }
     }
-    if((*raiz)->telefone < telefone) {
-        if((res = remove_ArvAVL(&(*raiz)->dir, telefone)) == 1) {
+    if((*raiz)->pessoa.telefone < pessoa.telefone) {
+        if((res = remove_ArvAVL(&(*raiz)->dir, pessoa)) == 1) {
             if(fatorBalanceamento_NO(*raiz) >= 2) {
                 if(altura_NO((*raiz)->esq->dir) <= altura_NO((*raiz)->esq->esq))
                     RotacaoLL(raiz);
@@ -250,7 +246,7 @@ int remove_ArvAVL(ArvAVL *raiz, int telefone) {
             }
         }
     }
-    if((*raiz)->telefone == telefone) {
+    if((*raiz)->pessoa.telefone == pessoa.telefone) {
         if((*raiz)->esq == NULL || (*raiz)->dir == NULL) {
             struct NO *oldNode = (*raiz);
             if((*raiz)->esq != NULL)
@@ -260,8 +256,8 @@ int remove_ArvAVL(ArvAVL *raiz, int telefone) {
             free(oldNode);
         }else{ //no tem 2 filhos
             struct NO *temp = procuraMenor((*raiz)->dir);
-            (*raiz)->telefone = temp->telefone;
-            remove_ArvAVL(&(*raiz)->dir, (*raiz)->telefone);
+            (*raiz)->pessoa.telefone = temp->pessoa.telefone;
+            remove_ArvAVL(&(*raiz)->dir, (*raiz)->pessoa);
             if(fatorBalanceamento_NO(*raiz) >= 2) {
                 if(altura_NO((*raiz)->esq->dir) <= altura_NO((*raiz)->esq->esq))
                     RotacaoLL(raiz);
