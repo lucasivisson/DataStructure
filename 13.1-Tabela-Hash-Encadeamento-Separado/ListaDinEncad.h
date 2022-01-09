@@ -1,7 +1,9 @@
+#ifndef LISTA_DIN_ENCAD_H
+#define LISTA_DIN_ENCAD_H
+
 struct aluno{
   int matricula;
   char nome[30];
-  float n1, n2, n3;
 };
 
 typedef struct elemento* Lista;
@@ -19,3 +21,5 @@ int lista_vazia(Lista *li);
 int lista_cheia(Lista *li);
 int busca_lista_mat(Lista *li, int mat, struct aluno *al);
 int busca_lista_pos(Lista *li, int pos, struct aluno *al);
+
+#endif

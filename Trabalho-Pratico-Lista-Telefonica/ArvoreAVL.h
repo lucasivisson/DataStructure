@@ -1,5 +1,5 @@
 struct dados {
-    int telefone;
+    int numero;
     char nome[50];
     char endereco[50];
 };

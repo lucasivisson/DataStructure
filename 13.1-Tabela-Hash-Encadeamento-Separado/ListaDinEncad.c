@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ListaDinEncad.h" //inclui os prototipos
+#include "TabelaHash.h"
 
 //Definição do tipo lista
 struct elemento{
@@ -185,7 +186,7 @@ int busca_lista_pos(Lista *li, int pos, struct aluno *al){
   }
 }
 
-int consulta_lista_mat(Lista *li, int mat, struct aluno *al) {
+int busca_lista_mat(Lista *li, int mat, struct aluno *al) {
   if(li == NULL) return 0;
   Elem *no = *li;
   while(no != NULL && no->dados.matricula != mat) {
