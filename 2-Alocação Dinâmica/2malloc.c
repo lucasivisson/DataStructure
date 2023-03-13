@@ -13,7 +13,7 @@ int main() {
   */
  
   /*
-  Alocamos por meio do malloc um espaço de memória 40 vezes maior do tamanho de um
+  Alocamos por meio do malloc um espaço de memória 10 vezes maior(40 bytes) do tamanho de um
   tipo inteiro no ponteiro p
   A função malloc retorna um ponteiro do tipo void e para resolver esse problema
   precisamos utilizar o casting que é forçar um molde do tipo de retorno da função

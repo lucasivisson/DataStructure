@@ -10,7 +10,7 @@ int main(void) {
   printf("%i\n", &x); // com o & acessamos o endereço de memória da variável
   printf("%i\n", *ponteiro); // com * acessamos o valor da variável que o ponteiro está apontando
   printf("%i\n", ponteiro); // sem o * acessamos o valor do endereço de memória da variável que o ponteiro está apontando
-  printf("%i\n", &ponteiro);
+  printf("%i\n", &ponteiro); // dessa forma, acessamos o endereço de memória do ponteiro em si e não da variável que ele está apontando.
 
   return 0;
 }

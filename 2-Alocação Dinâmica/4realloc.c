@@ -11,7 +11,7 @@ int main() {
     - ponteiro para um bloco de memória já alocado;
     - a quantidade de bytes a ser alocada.
     e retorna:
-    - NUL: no caso de erro;
+    - NULL: no caso de erro;
     - ponteiro para a primeira posição do array.
   */
 
