@@ -41,6 +41,7 @@ int main() {
     for(j = 0; j < N; j++) {
       printf("%i", p[i][j]);
     }
+    printf("\n");
     free(p[i]);
   }
   free(p);
