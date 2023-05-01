@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include "trie.h"
 
@@ -12,11 +13,11 @@ ASCIITrie* AT_Buscar_R(ASCIITrie* trie, unsigned char *chave, int tamanhoDaStrin
     return trie;
   }
   // Chama a função recursivamente passando o próximo nó que será o nó de acordo com o caractere da palavra que está sendo lida nesse recursão, passa a chave e o tamanho da string novamente e aumenta a quantidade de nós que foram buscados durante a execução do algoritmo.
-  return AT_Buscar_R(Trie->filhos[chave[profundidade]], chave, tamanhoDaString, profundidade+1);
+  return AT_Buscar_R(trie->filhos[chave[profundidade]], chave, tamanhoDaString, profundidade+1);
 }
 
 ASCIITrie* AT_Buscar(ASCIITrie* trie, unsigned char *chave) {
-  return AT_Buscar_R(Trie, chave, strlen(chave), 0);
+  return AT_Buscar_R(trie, chave, strlen(chave), 0);
 }
 
 ASCIITrie* AT_Criar() {
@@ -43,7 +44,7 @@ void AT_Inserir_R(ASCIITrie **trie, unsigned char *chave, int valor, int tamanho
     return;
   }
   // Chama a função recursivamente passando o endereço do nó que será o nó de acordo com o caractere da palavra que está sendo lida nesse recursão, passa a chave e o tamanho da string novamente e aumenta a quantidade de nós que foram buscados durante a execução do algoritmo.
-  AT_Inserir_R(&(*trie)->filhos[chave[profundidade]], chave, valor, profundidade+1);
+  AT_Inserir_R(&(*trie)->filhos[chave[profundidade]], chave, valor, tamanhoDaString, profundidade+1);
 }
 
 void AT_Inserir(ASCIITrie **trie, unsigned char *chave, int valor) {
@@ -77,4 +78,29 @@ void AT_Remover_R(ASCIITrie **trie, unsigned char *chave, int tamanhoDaString, i
 
 void AT_Remover(ASCIITrie **trie, unsigned char *chave) {
   AT_Remover_R(trie, chave, strlen(chave), 0);
+}
+
+void imprime_arvore_rec(ASCIITrie *trie, unsigned char *prefixo, int comprimento) {
+  unsigned char novoprefixo[comprimento+2];
+  memcpy(novoprefixo, prefixo, comprimento);
+  novoprefixo[comprimento+1]=0;
+
+  if(trie->estado == ATE_OCUPADO) {
+    printf("Palavra: %s \n", prefixo);
+  }
+
+  for(int i=0; i<256; i++) {
+    if(trie->filhos[i] != NULL) {
+      novoprefixo[comprimento] = i;
+      imprime_arvore_rec(trie->filhos[i], novoprefixo, comprimento+1);
+    }
+  }
+}
+
+void imprime_arvore(ASCIITrie *trie) {
+  if(trie == NULL) {
+    printf("Arvore Vazia \n");
+    return;
+  }
+  imprime_arvore_rec(trie, NULL, 0);
 }

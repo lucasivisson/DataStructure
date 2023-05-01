@@ -3,7 +3,7 @@
 typedef enum ASCIITrie_ESTADO {
   ATE_LIVRE,
   ATE_OCUPADO,
-} ASCIITrieESTADO;
+} ASCIITrie_ESTADO;
 
 typedef struct ASCIITrie {
   int valor;

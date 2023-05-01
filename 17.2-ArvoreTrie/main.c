@@ -4,16 +4,18 @@
 int main(int argc, char** argv) {
   ASCIITrie *trie = NULL;
 
-  AT_Inserir(&T, "", 42);
-  AT_Inserir(&T, "o", 1);
-  AT_Inserir(&T, "rato", 10);
-  AT_Inserir(&T, "roeu", 11);
-  AT_Inserir(&T, "a", 2);
-  AT_Inserir(&T, "roupa", 12);
-  AT_Inserir(&T, "do", 3);
-  AT_Inserir(&T, "rei", 13);
-  AT_Inserir(&T, "de", 14);
-  AT_Inserir(&T, "roma", 15);
+  AT_Inserir(&trie, "", 42);
+  AT_Inserir(&trie, "o", 1);
+  AT_Inserir(&trie, "rato", 10);
+  AT_Inserir(&trie, "roeu", 11);
+  AT_Inserir(&trie, "a", 2);
+  AT_Inserir(&trie, "roupa", 12);
+  AT_Inserir(&trie, "do", 3);
+  AT_Inserir(&trie, "rei", 13);
+  AT_Inserir(&trie, "de", 14);
+  AT_Inserir(&trie, "roma", 15);
+
+  imprime_arvore(trie);
 
   ASCIITrie *r;
 
