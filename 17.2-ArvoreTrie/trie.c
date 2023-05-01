@@ -80,7 +80,7 @@ void AT_Remover(ASCIITrie **trie, unsigned char *chave) {
   AT_Remover_R(trie, chave, strlen(chave), 0);
 }
 
-void imprime_arvore_rec(ASCIITrie *trie, unsigned char *prefixo, int comprimento) {
+void AT_Imprimir_R(ASCIITrie *trie, unsigned char *prefixo, int comprimento) {
   unsigned char novoprefixo[comprimento+2];
   memcpy(novoprefixo, prefixo, comprimento);
   novoprefixo[comprimento+1]=0;
@@ -92,15 +92,15 @@ void imprime_arvore_rec(ASCIITrie *trie, unsigned char *prefixo, int comprimento
   for(int i=0; i<256; i++) {
     if(trie->filhos[i] != NULL) {
       novoprefixo[comprimento] = i;
-      imprime_arvore_rec(trie->filhos[i], novoprefixo, comprimento+1);
+      AT_Imprimir_R(trie->filhos[i], novoprefixo, comprimento+1);
     }
   }
 }
 
-void imprime_arvore(ASCIITrie *trie) {
+void AT_Imprimir(ASCIITrie *trie) {
   if(trie == NULL) {
     printf("Arvore Vazia \n");
     return;
   }
-  imprime_arvore_rec(trie, NULL, 0);
+  AT_Imprimir_R(trie, NULL, 0);
 }

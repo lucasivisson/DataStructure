@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
   AT_Inserir(&trie, "de", 14);
   AT_Inserir(&trie, "roma", 15);
 
-  imprime_arvore(trie);
+  AT_Imprimir(trie);
 
   ASCIITrie *r;
 
