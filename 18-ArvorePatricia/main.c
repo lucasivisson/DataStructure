@@ -35,8 +35,6 @@ inserir(char *palavra, struct nodo **p) {
 	}
 
   /*Percorre o prefixo atual ate achar o indice onde ele difere da palavra passada na funcao*/
-  printf("(*p)->prefixo): %s\n", (*p)->prefixo);
-  printf("(*p)->prefixo): %i\n", strlen((*p)->prefixo));
 	for (i = 0; i < strlen((*p)->prefixo); i++)
 		if (palavra[i] != (*p)->prefixo[i])
 			break;
@@ -76,15 +74,14 @@ inserir(char *palavra, struct nodo **p) {
 
 		}
 	} else if (palavra[i] == '\0') { /* entra aqui no primeiro e no ultimo loop, quando se insere a primeira palavra ou quando se insere a ultima palavra. */
-    printf("entrou aqui\n");
 		(*p)->flag[i] = 1;
 	} else {
     /* Entra aqui quando estamos com uma palavra nova em que o i eh maior ou igual a quantidade de caracteres da palavra comparada do No*/
-    printf("entrou no else\n");
-		for (j = 0; j < 26; j++)
+		for (j = 0; j < 26; j++) {
+			// Acha o proximo caractere pelos filhos do No comparando qual a posicao nao eh nula 
 			if ((*p)->p[j] != NULL)
 				break;
-        // Acha a posicao do array dos filhos do No em que eh diferente de Nulo.
+		}
 		if (j < 26) {
 			inserir(palavra + i + 1, &(*p)->p[palavra[i] - 'a']);
 		} else { //aumenta o prefixo
@@ -137,13 +134,50 @@ void Imprimir(struct nodo **p,int m) {
     }
     printf("]");
 }
+
+
+void buscar(char *palavra, struct nodo **p, char *finalString, int posicaoAtualCaractere) {
+	for (int i = 0; i < 26; i++) {
+		// printf("palavra[i]: %c\n", palavra[i]);
+		// printf("palavra[i] - 'a': %d\n", palavra[i] - 'a');
+		if((*p)->p[i] != NULL && palavra[posicaoAtualCaractere] - 'a' == i) {
+			// printf("(*p)->p[i]: %d\n", (*p)->p[i]);
+			printf("i: %i\n", i);
+			printf("%s\n", (*p)->p[i]->prefixo);
+
+			finalString[posicaoAtualCaractere] = palavra[posicaoAtualCaractere];
+			posicaoAtualCaractere++;
+			for(int j = 0; j < strlen((*p)->p[i]->prefixo); j++) {
+				finalString[posicaoAtualCaractere + j] = (*p)->p[i]->prefixo[j];
+				printf("finalString: %s\n", finalString);
+				if(j = strlen((*p)->p[i]->prefixo) - 1) {
+					posicaoAtualCaractere = posicaoAtualCaractere + j;
+				}
+			}
+			// printf("palavra: %s\n", palavra);
+			// printf("finalString: %s\n", finalString);
+			if(strcmp(palavra,finalString) == 0) {
+				printf("oxeeeee: %s\n", palavra);
+				printf("finalString: %s\n", finalString);
+				return;
+			} else {
+				buscar(palavra, &((*p)->p[i]), finalString, posicaoAtualCaractere);
+			}
+		}
+		// printf("%d\n", (*p)->flag[i] != NULL);
+	}
+	// printf("palavra: %s\n", (*p)->prefixo);
+}
+
 int main(int argc , char *argv[]) {
 	struct nodo *p = NULL;
-	char str[255] = "cadeira";
-	char str1[255] = "carteira";
-	char str2[255] = "cama";
-	char str3[255] = "ciclista";
-  char str4[255] = "ciclismo";
+	char str[255] = "formado";
+	char str1[255] = "formiga";
+	char str2[255] = "alergia";
+	char str3[255] = "alegria";
+  char str4[255] = "alegoria";
+
+	char finalString[30] = "";
 	
 	
 	// while( scanf("%s", &str) != EOF ){
@@ -153,10 +187,11 @@ int main(int argc , char *argv[]) {
   inserir(str2,&p);
   inserir(str3,&p);
   inserir(str4,&p);
-		
+	
+	buscar(str1, &p, finalString, 0);
 		
 	// }
-	Imprimir(&p, 1);
+	// Imprimir(&p, 1);
 	printf("\n");
 	
 	return 0;
